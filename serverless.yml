@@ -1,0 +1,53 @@
+service: print-rider-infra-functions
+plugins:
+  - serverless-python-requirements
+  - serverless-wsgi
+  - serverless-domain-manager
+  - serverless-dotenv-plugin
+  - serverless-api-gateway-caching
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  tableName: ${self:custom.stage}-print-documents
+  wsgi:
+    app: app.app
+    slim: true
+    packRequirements: false
+  customDomain:
+    domainName: printrider.bettercallbots.com
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+    certificateArn: ${env:CERTIFICATE_ARN}
+package:
+  exclude:
+    - "**"
+  include:
+    - "./printrider/**"
+    - "prod.env"
+    - "app.py"
+provider:
+  name: aws
+  runtime: python3.6
+  versionFunctions: false
+  stage: dev
+  profile: printrider
+  region: eu-west-1
+  logRetentionInDays: 7
+  environment:
+    APP_PRINT_DOCUMENTS_DB_TABLE: ${self:custom.tableName}
+    APP_DOMAIN_NAME: https://${self:custom.customDomain.domainName}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Scan
+        - dynamodb:PutItem
+        - dynamodb:GetItem
+      Resource:
+        'Fn::ImportValue': 'PrintDocumentsDynamoDbTableArnOutput'
+functions:
+  app:
+    handler: wsgi_handler.handler
+    reservedConcurrency: 25
+    events:
+      - http: ANY /
+      - http: ANY {proxy+}

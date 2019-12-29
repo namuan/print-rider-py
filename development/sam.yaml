@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Api:
+    EndpointConfiguration: REGIONAL
+
+Resources:
+  PrintRiderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: wsgi_handler.handler
+      Runtime: python3.6
+      CodeUri: ../.serverless/print-rider-infra-functions.zip
+      MemorySize: 512
+      Policies: AWSLambdaBasicExecutionRole
+      Timeout: 15
+      Environment:
+        Variables:
+          APP_DOMAIN_NAME: "http://localhost:3000"
+          APP_PRINT_DOCUMENTS_DB_TABLE: "local-print-documents"
+          APP_DYNAMO: "http://dynamo:8000"
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: any

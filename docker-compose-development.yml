@@ -1,0 +1,24 @@
+version: '3.3'
+
+services:
+  printrider:
+    build:
+      context: .
+    depends_on:
+      - dynamo
+    volumes:
+    - ~/.aws:/home/lamb/.aws
+    environment:
+      - FLASK_ENV=development
+      - DEBUG=True
+      - AWS_SAM_LOCAL=True
+    ports:
+      - 5000:5000
+    links:
+      - dynamo:dynamo
+  dynamo:
+    image: "instructure/dynamo-local-admin"
+    ports:
+      - 8000:8000
+volumes:
+  db_data:

@@ -1,0 +1,16 @@
+{
+  "name": "print-rider-infra-functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-api-gateway-caching": "^1.4.1",
+    "serverless-domain-manager": "^3.3.0",
+    "serverless-dotenv-plugin": "^2.1.1",
+    "serverless-python-requirements": "^5.0.1",
+    "serverless-wsgi": "^1.7.4"
+  },
+  "dependencies": {}
+}
