@@ -11,6 +11,9 @@ setup-local: dynamo-local ## Setup local environment (DynamoDb tables etc)
 run-local: ## Runs the service locally connecting with dynamodb in Docker
 	FLASK_ENV=development DEBUG=True AWS_SAM_LOCAL=True APP_DYNAMO=http://localhost:8000 python3 -m flask run
 
+run-local-docker: ## Runs the service in docker
+	docker-compose -f docker-compose-development.yml up --build
+
 test: ## Test the service locally connecting with dynamodb in Docker
 	python -m pytest tests
 

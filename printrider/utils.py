@@ -3,6 +3,8 @@ from datetime import datetime
 
 from bleach import clean
 
+from printrider.bleach_ext import *
+
 
 def log(msg):
     t = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
@@ -15,7 +17,11 @@ def error(msg):
 
 
 def sanitise_html(encoded_html):
-    return clean(b64_decode(encoded_html))
+    return clean(
+        b64_decode(encoded_html),
+        tags=EXTENDED_ALLOWED_TAGS,
+        attributes=EXTENDED_ALLOWED_ATTRS
+    )
 
 
 def b64_encode(raw_str: str) -> str:

@@ -1,7 +1,18 @@
 import os
-from pathlib import Path
 
 import boto3
+from dotenv import load_dotenv
+
+from printrider.utils import log
+
+is_offline = os.environ.get("AWS_SAM_LOCAL", False)
+
+if is_offline:
+    log("Offline detected. Loading local.env")
+    load_dotenv("local.env", verbose=True)
+else:
+    log("Running on AWS Lambda. Loading prod.env")
+    load_dotenv("prod.env", verbose=True)
 
 
 class Config(object):
@@ -28,6 +39,5 @@ class DevelopmentConfig(Config):
     DOMAIN_NAME = os.getenv("APP_DOMAIN_NAME")
 
 
-def setup_config(is_offline):
+def setup_config():
     return DevelopmentConfig() if is_offline else ProductionConfig()
-
