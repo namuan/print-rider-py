@@ -2,13 +2,15 @@
 
 Simple Http APIs sharing using HttpRider. 
 
-<demo>
+
+![Demo](docs/demo.gif)
+
 
 ### Architecture:
 
-The PrintRider service is developed using the Python [Flask]() framework and deployed to [AWS Lambda]() with the [Serverless Framework]().
+The PrintRider service is developed using the Python [Flask](https://github.com/pallets/flask) framework and deployed to [AWS Lambda](https://aws.amazon.com/lambda/) with the [Serverless Framework](https://serverless.com/).
 
-<diagram>
+![Architecture](docs/print_rider_arch.png)
 
 ### Installation:
 
