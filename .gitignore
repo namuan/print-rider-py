@@ -10,7 +10,7 @@ target/
 
 # dotenv
 .env
-.env.local
+.env.beta
 .env.prod
 
 # virtualenv
