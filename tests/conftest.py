@@ -6,11 +6,9 @@ from printrider.config import Config
 
 
 class TestConfiguration(Config):
-    DEVELOPMENT = True
-    DEBUG = True
     DB_CLIENT = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
     PRINT_DOCUMENTS_DB_TABLE = "local-print-documents"
-    DOMAIN_NAME = "http://test"
+    HOST_NAME = "http://test"
 
 
 @pytest.fixture(scope='module')

@@ -14,8 +14,8 @@ custom:
     slim: true
     packRequirements: false
   customDomain:
-    domainName: printrider.bettercallbots.com
-    stage: ${self:provider.stage}
+    domainName: ${env:SLS_DOMAIN_NAME}
+    stage: ${self:custom.stage}
     createRoute53Record: true
     certificateArn: ${env:CERTIFICATE_ARN}
 package:
@@ -23,7 +23,7 @@ package:
     - "**"
   include:
     - "./printrider/**"
-    - "prod.env"
+    - ".env.prod"
     - "app.py"
 provider:
   name: aws
@@ -35,7 +35,7 @@ provider:
   logRetentionInDays: 7
   environment:
     APP_PRINT_DOCUMENTS_DB_TABLE: ${self:custom.tableName}
-    APP_DOMAIN_NAME: https://${self:custom.customDomain.domainName}
+    APP_HOST_NAME: https://${self:custom.customDomain.domainName}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -43,7 +43,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:GetItem
       Resource:
-        'Fn::ImportValue': 'PrintDocumentsDynamoDbTableArnOutput'
+        'Fn::ImportValue': '${self:custom.stage}-PrintDocumentsDynamoDbTableArnOutput'
 functions:
   app:
     handler: wsgi_handler.handler

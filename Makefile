@@ -23,20 +23,49 @@ run-local-sam: sls-package	## Runs the service locally with SAM
 prepare-sls-base: ## Installs NPM dependencies for Base infrastructure
 	cd infra/base && npm install
 
-deploy-sls-infra-base: prepare-sls-base ## Deploy base infrastructure with Serverless framework
+deploy-sls-infra-base-dev: prepare-sls-base ## Deploy base infrastructure with Serverless framework
 	cd infra/base && sls --config serverless.yml deploy -v
+
+deploy-sls-infra-base-prod: prepare-sls-base ## Deploy base infrastructure with Serverless framework
+	cd infra/base && sls --config serverless.yml deploy -v --stage prod
 
 prepare-sls-functions: ## Installs NPM dependencies for Functions
 	npm install
 
 sls-package: ## Packages the source in a zip file
-	sls --config serverless.yml package
+	sls --config serverless.yml package --stage dev --env dev
 
-deploy-sls-functions: prepare-sls-functions ## Deploy functions infrastructure with Serverless framework
-	sls --config serverless.yml deploy -v
+deploy-sls-functions-dev: prepare-sls-functions ## Deploy functions infrastructure with Serverless framework
+	sls --config serverless.yml deploy -v --stage dev --env dev
 
-lambda-app-logs: ## Tail logs
-	sls --config serverless.yml logs -f app -v
+create-sls-domain-dev: prepare-sls-functions ## Deploy functions infrastructure with Serverless framework
+	sls --config serverless.yml create_domain --stage dev -v --env dev
+
+delete-sls-domain-dev: prepare-sls-functions ## Deploy functions infrastructure with Serverless framework
+	echo "Are you sure about this? If yes then copy paste the following command"
+	echo "sls --config serverless.yml delete_domain --stage dev -v --env dev"
+
+remove-sls-functions-dev: prepare-sls-functions ## Deploy functions infrastructure with Serverless framework
+	sls --config serverless.yml remove -v --stage dev --env dev
+
+deploy-sls-functions-prod: prepare-sls-functions ## Deploy functions infrastructure with Serverless framework
+	sls --config serverless.yml deploy -v --stage prod --env prod
+
+create-sls-domain-prod: prepare-sls-functions ## Deploy functions infrastructure with Serverless framework
+	sls --config serverless.yml create_domain --stage prod -v --env prod
+
+delete-sls-domain-prod: prepare-sls-functions ## Deploy functions infrastructure with Serverless framework
+	echo "Are you sure about this? If yes then copy paste the following command"
+	echo "sls --config serverless.yml delete_domain --stage prod -v --env prod"
+
+remove-sls-functions-prod: prepare-sls-functions ## Deploy functions infrastructure with Serverless framework
+	sls --config serverless.yml remove -v --stage prod --env prod
+
+lambda-app-logs-dev: ## Tail logs
+	sls --config serverless.yml logs -f app -v --stage dev --env dev
+
+lambda-app-logs-prod: ## Tail logs
+	sls --config serverless.yml logs -f app -v --stage prod --env prod
 
 .PHONY: help
 .DEFAULT_GOAL := help

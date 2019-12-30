@@ -5,7 +5,7 @@ from printrider.config import setup_config
 from printrider.utils import log
 
 app_config = setup_config()
-log("Loaded configuration: {}".format(app_config.DOMAIN_NAME))
+log("Loaded configuration: {}".format(app_config.HOST_NAME))
 
 app = create_app(app_config)
 app.wsgi_app = ProxyFix(app.wsgi_app)

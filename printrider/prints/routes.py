@@ -12,7 +12,7 @@ def save_print():
     doc_json = request.get_json()
     doc_id = save_document(db_config, doc_json)
     resp = make_response('', HTTPStatus.CREATED)
-    resp.headers['Location'] = current_app.config['DOMAIN_NAME'] + "/prints/" + doc_id
+    resp.headers['Location'] = current_app.config['HOST_NAME'] + "/prints/" + doc_id
     return resp
 
 

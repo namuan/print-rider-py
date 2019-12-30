@@ -17,7 +17,7 @@ Resources:
       Timeout: 15
       Environment:
         Variables:
-          APP_DOMAIN_NAME: "http://localhost:3000"
+          APP_HOST_NAME: "http://localhost:3000"
           APP_PRINT_DOCUMENTS_DB_TABLE: "local-print-documents"
           APP_DYNAMO: "http://dynamo:8000"
       Events:
