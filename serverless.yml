@@ -11,8 +11,9 @@ custom:
   tableName: ${self:custom.stage}-print-documents
   wsgi:
     app: app.app
-    slim: true
     packRequirements: false
+  pythonRequirements:
+    slim: true
   customDomain:
     domainName: ${env:SLS_DOMAIN_NAME}
     stage: ${self:custom.stage}

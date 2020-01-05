@@ -1,10 +1,15 @@
 from http import HTTPStatus
 
-from flask import request, make_response, render_template, current_app
+from flask import request, make_response, render_template, current_app, redirect
 
 from printrider import db_config
 from printrider.prints import prints_blueprint
 from printrider.prints.service import save_document, find_document
+
+
+@prints_blueprint.route('/')
+def index():
+    return redirect("https://deskriders.dev/http-rider-docs", code=302)
 
 
 @prints_blueprint.route('/prints', methods=["POST"])
